@@ -40,8 +40,8 @@ module UnderFire
     # @option args [String] :album_title Name of the album.
     # @option args [String] :mode Either 'SINGLE_BEST' or 'SINGLE_BEST_COVER'
     def initialize(args={})
-      super args[:mode]
-      @parameters = args.reject {|k,v| k == :mode}
+      super args[:mode], args
+      @parameters = args.reject {|k,v| k == :mode || k == :lang || k == :country}
       parameters.each do |k,v| send("#{k}=", v) end
       @query = build_query
     end

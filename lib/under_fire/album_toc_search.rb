@@ -22,7 +22,7 @@ module UnderFire
     # @option [String] :toc CD table of contents (space-separated list of track start frames)
     # @option [String] :mode Either 'SINGLE_BEST' or 'SINGLE_BEST_COVER'
     def initialize(args)
-      super args[:mode]
+      super args[:mode], args
       @toc = args[:toc]
       @query = build_query
     end

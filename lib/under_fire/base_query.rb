@@ -11,9 +11,12 @@ module UnderFire
     attr_reader :config
 
     # @param [String] mode Either 'SINGLE_BEST' or 'SINGLE_BEST_COVER' (defaults to 'SINGLE_BEST_COVER').
-    def initialize(mode="SINGLE_BEST_COVER")
+    # @option options [String] :lang Language code.
+    # @option options [String] :country Country code for country-specific genre hierarchy.
+    def initialize(mode="SINGLE_BEST_COVER", options={})
       @mode = mode || "SINGLE_BEST_COVER"
       @config = Configuration.instance
+      @options = options
     end
 
     # @yield [Builder] builder object used by subclass's build_query method.
@@ -24,8 +27,8 @@ module UnderFire
           builder.CLIENT config.client_id
           builder.USER config.user_id
         }
-        builder.LANG "eng"
-        builder.COUNTRY "canada"
+        builder.LANG (@options[:lang] || "eng")
+        builder.COUNTRY (@options[:country] || "canada")
         builder.APP_INFO %Q{APP="under-fire #{VERSION}", OS="#{RUBY_PLATFORM}"}
         yield builder
       }
