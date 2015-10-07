@@ -5,8 +5,6 @@ require 'under_fire/api_request'
 require 'under_fire/api_response'
 require 'under_fire/configuration'
 
-require 'pry'
-
 module UnderFire
   # Public interface to UnderFire's functionality.
   #

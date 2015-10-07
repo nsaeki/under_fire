@@ -1,5 +1,4 @@
 require_relative '../../spec_helper'
-require 'pry'
 
 module UnderFire
   describe Configuration do
