@@ -20,8 +20,6 @@ module UnderFire
       uri = URI(api_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
-      http.ssl_version = 'SSLv3'
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       req = Net::HTTP::Post.new(uri.request_uri)
       req.body = query
       req['Content-Type'] = 'application/xml'
