@@ -1,4 +1,5 @@
 require 'under_fire/base_query'
+require 'under_fire/query_option'
 require 'builder'
 
 module UnderFire
@@ -41,8 +42,9 @@ module UnderFire
     # @option args [String] :mode Either 'SINGLE_BEST' or 'SINGLE_BEST_COVER'
     def initialize(args={})
       super args[:mode], args
-      @parameters = args.reject {|k,v| k == :mode || k == :lang || k == :country}
+      @parameters = args.reject {|k,v| k == :mode || k == :lang || k == :country || k == :option}
       parameters.each do |k,v| send("#{k}=", v) end
+      @query_option = QueryOption.new(args[:option])
       @query = build_query
     end
 
@@ -57,6 +59,7 @@ module UnderFire
           parameters.each do |k,v|
             builder.TEXT(v, TYPE: k.to_s.upcase)
           end
+          @query_option.build_query(builder)
         }
       end
     end

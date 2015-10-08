@@ -1,4 +1,5 @@
 require 'under_fire/base_query'
+require 'under_fire/query_option'
 require 'builder'
 
 module UnderFire
@@ -24,6 +25,7 @@ module UnderFire
     def initialize(args)
       super args[:mode], args
       @toc = args[:toc]
+      @query_option = QueryOption.new(args[:option])
       @query = build_query
     end
 
@@ -38,6 +40,7 @@ module UnderFire
           builder.TOC {
             builder.OFFSETS toc.to_s
           }
+          @query_option.build_query(builder)
         }
       end
     end
