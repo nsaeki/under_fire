@@ -22,6 +22,7 @@ module UnderFire
 
     # Creates OPTION query instance from given argument.
     # Currently supports SELECT_EXTENDED and SELECT_DETAIL.
+    # Other options are not tested.
     #
     # @param [Hash] args the arguments for an QeuryOption.
     # @option args [Array] :select_extended arguments for SELECT_EXTENDED.
@@ -35,15 +36,20 @@ module UnderFire
     # @return [String] XML string for OPTION query.
     def build_query(builder)
         builder.OPTION {
-          if @option[:select_extended]
-            builder.PARAMETER 'SELECT_EXTENDED'
-            builder.VALUE @option[:select_extended].map(&:upcase).join(',')
-          end
-          if @option[:select_detail]
-            builder.PARAMETER 'SELECT_DETAIL'
-            builder.VALUE @option[:select_detail].map { |a|
-              "#{a[0]}:#{a[1]}".upcase
-            }.join(',')
+          @option.each do |k, v|
+            builder.PARAMETER k.to_s.upcase
+            value = case v
+                    when Array then v.join(',')
+                    when Hash  then v.map { |a| a.join(':') }.join(',')
+                    else
+                      v.to_s
+                    end
+
+            # I don't know this is correct or not, but I think we should not
+            # touch third party ID.
+            value.upcase! unless k == :prefer_xid
+
+            builder.VALUE value
           end
         }
     end
